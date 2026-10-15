@@ -80,6 +80,26 @@ def _edit_distance_at_most_one(a: str, b: str) -> bool:
     return edits == 1
 
 
+def official_brand_match(raw_url: str) -> dict | None:
+    """Return a configured official brand domain matching the hostname, else None.
+
+    Matching is hostname-boundary aware: ``google.com.attacker.example`` does not
+    match ``google.com``. Subdomains under a configured official hostname are
+    accepted, and the UI warns that this is not a guarantee of page safety.
+    """
+    try:
+        host = _host(raw_url)
+    except (ValueError, UnicodeError):
+        return None
+    if not host:
+        return None
+    for brand, official_domains in BRAND_DOMAINS.items():
+        for domain in official_domains:
+            if host == domain or host.endswith("." + domain):
+                return {"brand": brand, "domain": domain, "host": host}
+    return None
+
+
 def inspect_brand_impersonation(raw_url: str) -> dict | None:
     """Return a high-confidence brand lookalike finding, else None.
 

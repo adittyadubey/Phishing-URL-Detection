@@ -10,7 +10,7 @@ from urllib.parse import urlsplit
 
 from page_features import FetchError, extract_content_features, fetch_page
 from phishing_features import URL_FEATURES, extract_features, normalise_url
-from brand_protection import inspect_brand_impersonation
+from brand_protection import inspect_brand_impersonation, official_brand_match
 from train_model import METADATA_PATH, MODEL_PATH, train
 
 st.set_page_config(page_title="Phishing URL Detection", page_icon="🛡️", layout="wide", initial_sidebar_state="collapsed")
@@ -275,13 +275,22 @@ if submitted:
             # Independent defense-in-depth check for high-confidence brand typosquats.
             # This is not a substitute for a maintained reputation/threat-intelligence feed.
             brand_finding = inspect_brand_impersonation(url_text)
+            official_match = official_brand_match(url_text)
+            # A configured exact official domain takes precedence over a borderline
+            # ML result. Keep all model scores visible for transparency; this does not
+            # mean every URL mentioning a brand, or every lookalike, is trusted.
             is_phish = (score >= 0.5) or (brand_finding is not None)
             if brand_finding is not None:
-                # Avoid presenting a contradictory low ML score as the final verdict.
-                # Preserve and show the model score separately, but force the verdict
-                # to phishing when a near-exact known-brand impersonation is detected.
+                # A near-exact lookalike is a separate, transparent high-risk signal.
                 cls, title = "bad", "Likely phishing — brand lookalike detected"
                 flags.append(brand_finding["reason"])
+            elif official_match is not None:
+                is_phish = False
+                cls, title = "ok", f"Configured official domain recognized — {official_match['brand']}"
+                flags.append(
+                    f"The hostname matches the configured official domain {official_match['domain']}. "
+                    "Individual ML predictions are still shown below; this allowlist is not a guarantee against compromised pages or unsafe redirects."
+                )
             else:
                 cls, title = ("bad", "Likely phishing") if is_phish else ("ok", "Likely legitimate")
             color = "#ff7b8c" if is_phish else "#4fe0b0"
@@ -322,7 +331,8 @@ if submitted:
             st.markdown(
                 f'<div class="verdict {cls}"><div class="t">{title}</div>'
                 f'<div class="s">{meta["selected_model"]} gives this URL a <b>{score:.0%}</b> phishing score. '
-                + ("A separate brand-lookalike rule also flagged this domain." if brand_finding else "")
+                + ("A separate brand-lookalike rule also flagged this domain. " if brand_finding else "")
+                + ("The configured official-domain match overrides the headline verdict, while individual model outputs remain visible. " if official_match is not None and brand_finding is None else "")
                 + ' Treat this as decision support, not proof of safety.</div>'
                 f'<div class="bar"><div style="width:{score*100:.0f}%;background:{color}"></div></div>'
                 f"{status_html}{flag_html}{model_html}</div>",

@@ -1,0 +1,302 @@
+{
+  "selected_model": "Random Forest",
+  "dataset": "PhiUSIIL",
+  "label_mapping": {
+    "0": "phishing",
+    "1": "legitimate"
+  },
+  "features": [
+    "LineOfCode",
+    "LargestLineLength",
+    "HasTitle",
+    "HasFavicon",
+    "Robots",
+    "IsResponsive",
+    "NoOfURLRedirect",
+    "NoOfSelfRedirect",
+    "HasDescription",
+    "NoOfPopup",
+    "NoOfiFrame",
+    "HasExternalFormSubmit",
+    "HasSocialNet",
+    "HasSubmitButton",
+    "HasHiddenFields",
+    "HasPasswordField",
+    "Bank",
+    "Pay",
+    "Crypto",
+    "HasCopyrightInfo",
+    "NoOfImage",
+    "NoOfCSS",
+    "NoOfJS",
+    "NoOfSelfRef",
+    "NoOfEmptyRef",
+    "NoOfExternalRef",
+    "host_len",
+    "sld_len",
+    "n_dots",
+    "n_hyphen",
+    "n_digit",
+    "digit_ratio",
+    "host_entropy",
+    "sld_entropy",
+    "is_ip",
+    "longest_label",
+    "n_labels",
+    "tld_len",
+    "vowel_ratio",
+    "max_consec_consonants",
+    "kw_hits",
+    "has_at",
+    "has_punycode",
+    "tld_freq"
+  ],
+  "url_features": [
+    "host_len",
+    "sld_len",
+    "n_dots",
+    "n_hyphen",
+    "n_digit",
+    "digit_ratio",
+    "host_entropy",
+    "sld_entropy",
+    "is_ip",
+    "longest_label",
+    "n_labels",
+    "tld_len",
+    "vowel_ratio",
+    "max_consec_consonants",
+    "kw_hits",
+    "has_at",
+    "has_punycode"
+  ],
+  "n_rows": 9997,
+  "duplicates_removed": 3,
+  "raw_url_column_available": false,
+  "domain_group_split": false,
+  "validation": {
+    "method": "StratifiedKFold",
+    "folds": 2,
+    "scoring": "f1",
+    "tuning_data": "training split only"
+  },
+  "n_train": 6997,
+  "n_test": 3000,
+  "test_size": 0.3,
+  "random_state": 42,
+  "metrics": {
+    "accuracy": 0.902,
+    "precision": 0.9142661179698217,
+    "recall": 0.8874833555259654,
+    "f1": 0.9006756756756756,
+    "roc_auc": 0.9427103425961647
+  },
+  "confusion_matrix": [
+    [
+      1373,
+      125
+    ],
+    [
+      169,
+      1333
+    ]
+  ],
+  "models": {
+    "Logistic Regression": {
+      "accuracy": 0.8576666666666667,
+      "precision": 0.8543177323665129,
+      "recall": 0.8628495339547271,
+      "f1": 0.8585624378933422,
+      "roc_auc": 0.9133731793300967,
+      "confusion_matrix": [
+        [
+          1277,
+          221
+        ],
+        [
+          206,
+          1296
+        ]
+      ],
+      "best_params": {
+        "model__C": 1.0
+      },
+      "best_cv_f1": 0.864162886876923
+    },
+    "SVM (RBF)": {
+      "accuracy": 0.8703333333333333,
+      "precision": 0.8644400785854617,
+      "recall": 0.8788282290279628,
+      "f1": 0.8715747771541763,
+      "roc_auc": 0.9176478535961841,
+      "confusion_matrix": [
+        [
+          1291,
+          207
+        ],
+        [
+          182,
+          1320
+        ]
+      ],
+      "best_params": {
+        "model__C": 1.0,
+        "model__gamma": "scale"
+      },
+      "best_cv_f1": 0.873520478832803
+    },
+    "Decision Tree": {
+      "accuracy": 0.8463333333333334,
+      "precision": 0.8642407277816655,
+      "recall": 0.822237017310253,
+      "f1": 0.8427157966564313,
+      "roc_auc": 0.8313883669126523,
+      "confusion_matrix": [
+        [
+          1304,
+          194
+        ],
+        [
+          267,
+          1235
+        ]
+      ],
+      "best_params": {
+        "model__max_depth": 24,
+        "model__min_samples_leaf": 1
+      },
+      "best_cv_f1": 0.8373659673659675
+    },
+    "Random Forest": {
+      "accuracy": 0.902,
+      "precision": 0.9142661179698217,
+      "recall": 0.8874833555259654,
+      "f1": 0.9006756756756756,
+      "roc_auc": 0.9427103425961647,
+      "confusion_matrix": [
+        [
+          1373,
+          125
+        ],
+        [
+          169,
+          1333
+        ]
+      ],
+      "best_params": {
+        "model__max_depth": null,
+        "model__min_samples_leaf": 1,
+        "model__n_estimators": 200
+      },
+      "best_cv_f1": 0.9051084858086872
+    }
+  },
+  "url_only_models": {
+    "Logistic Regression": {
+      "accuracy": 0.757,
+      "precision": 0.854262144821265,
+      "recall": 0.6205059920106525,
+      "f1": 0.7188584650983417,
+      "roc_auc": 0.7932442991009763,
+      "confusion_matrix": [
+        [
+          1339,
+          159
+        ],
+        [
+          570,
+          932
+        ]
+      ],
+      "best_params": {
+        "model__C": 1.0
+      },
+      "best_cv_f1": 0.7766840068539982
+    },
+    "SVM (RBF)": {
+      "accuracy": 0.7623333333333333,
+      "precision": 0.8833819241982507,
+      "recall": 0.6051930758988016,
+      "f1": 0.718293164757013,
+      "roc_auc": 0.8167472297728529,
+      "confusion_matrix": [
+        [
+          1378,
+          120
+        ],
+        [
+          593,
+          909
+        ]
+      ],
+      "best_params": {
+        "model__C": 5.0,
+        "model__gamma": "scale"
+      },
+      "best_cv_f1": 0.7873620855266807
+    },
+    "Decision Tree": {
+      "accuracy": 0.7246666666666667,
+      "precision": 0.7289972899728997,
+      "recall": 0.7163781624500666,
+      "f1": 0.722632639355272,
+      "roc_auc": 0.7391819807679658,
+      "confusion_matrix": [
+        [
+          1098,
+          400
+        ],
+        [
+          426,
+          1076
+        ]
+      ],
+      "best_params": {
+        "model__max_depth": 24,
+        "model__min_samples_leaf": 1
+      },
+      "best_cv_f1": 0.7024089706659535
+    },
+    "Random Forest": {
+      "accuracy": 0.752,
+      "precision": 0.7676553672316384,
+      "recall": 0.7237017310252996,
+      "f1": 0.7450308430431802,
+      "roc_auc": 0.8239010202684804,
+      "confusion_matrix": [
+        [
+          1169,
+          329
+        ],
+        [
+          415,
+          1087
+        ]
+      ],
+      "best_params": {
+        "model__max_depth": null,
+        "model__min_samples_leaf": 1,
+        "model__n_estimators": 150
+      },
+      "best_cv_f1": 0.7520092127185594
+    }
+  },
+  "tld_lookup": {
+    "com": 0.4774695160810638,
+    "by_length": {
+      "2": 0.0051111016697115,
+      "3": 0.0274758890257891,
+      "4": 0.0020775799804563,
+      "5": 3.8237668351956495e-05,
+      "6": 4.248629816884055e-05,
+      "7": 2.7616093809746356e-05,
+      "8": 3.398903853507244e-05,
+      "9": 1.9118834175978247e-05,
+      "10": 8.49725963376811e-06,
+      "11": 1.699451926753622e-05,
+      "14": 0.0058546118876662
+    },
+    "default": 0.0066491056634235
+  },
+  "label_definition": "0=phishing (positive class for precision/recall/F1), 1=legitimate"
+}
